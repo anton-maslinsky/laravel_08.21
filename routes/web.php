@@ -16,3 +16,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('info', function (){
+    echo "Информация о проекте";
+});
+
+Route::get('news', function (){
+    echo "Страница новостей";
+});
+
+
+
