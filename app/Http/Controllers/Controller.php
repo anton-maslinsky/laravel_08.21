@@ -62,7 +62,7 @@ class Controller extends BaseController
         ]
     ];
 
-    protected array $newsCategories = [
+    protected array $categories = [
         [
             'id' => 1,
             'title' => 'Культура'
