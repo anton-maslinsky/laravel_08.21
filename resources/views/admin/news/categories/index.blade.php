@@ -9,35 +9,37 @@
 
     <!-- Content Row -->
     <div class="row">
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table table-bordered">
-                    <thead>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Заголовок</th>
+                    <th>Текст</th>
+                    <th>Дата добавления</th>
+                    <th>Управление</th>
+                </tr>
+                </thead>
+                <tbody>
+                @forelse($categories as $category)
                     <tr>
-                        <th>Название</th>
-                        <th>Дата добавления</th>
-                        <th>Управление</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    @forelse($categories as $category)
-                        <tr>
-                            <td>{{ $category['title'] }}</td>
-                            <td>{{ now()->format('d-m-Y H:i') }}</td>
-                            <td>
-                                <a href="{{ route('admin.news.edit', ['news' => $category['id']]) }}" style="font-size: 12px;">Редактировать </a>
-                                <a href="javascript:;" style="font-size: 12px; color: red;">   Удалить</a>
-                            </td>
+                        <td>{{ $category->id }}</td>
+                        <td>{{ $category->title }}</td>
+                        <td>{{ $category->description }}</td>
+                        <td>{{ $category->created_at}}</td>
+                        <td>
+                            <a href="{{ route('admin.categories.edit', ['category' => $category->id]) }}" style="font-size: 12px;">Редактировать </a>
+                            <a href="javascript:;" style="font-size: 12px; color: red;">   Удалить</a>
+                        </td>
 
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4">Новостей не найдено</td>
-                        </tr>
-                    @endforelse
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4">Записей нет</td>
+                    </tr>
+                @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 @endsection

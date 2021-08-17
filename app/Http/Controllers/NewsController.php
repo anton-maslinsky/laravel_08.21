@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
 use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {
+
     public function index()
     {
+        $model = new News();
+        $newsList = $model->getNews();
+
         return view('news.index', [
-            'newsList' => $this->newsList
+            'newsList' => $newsList
         ]);
     }
 
     public function show(int $id)
     {
-        $newsList = [];
-        foreach ($this->newsList as $news) {
-            if($news['id'] === $id) {
-                $newsList[] = $news;
-            }
-        }
-
-        if(empty($newsList)) {
-            abort(404);
-        }
+        $news =\DB::table('news')->select('id','title', 'description')->find($id);
 
         return view('news.show', [
-            'id' => $id
+            'news' => $news
         ]);
     }
 }

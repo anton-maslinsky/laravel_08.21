@@ -13,29 +13,35 @@
             <table class="table table-bordered">
                 <thead>
                     <tr>
+                        <th>#ID</th>
                         <th>Заголовок</th>
                         <th>Текст</th>
+                        <th>Автор</th>
+                        <th>Статус</th>
                         <th>Дата добавления</th>
                         <th>Управление</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($newsList as $news)
-                        <tr>
-                            <td>{{ $news['title'] }}</td>
-                            <td>{{ $news['description'] }}</td>
-                            <td>{{ now()->format('d-m-Y H:i') }}</td>
-                            <td>
-                                <a href="{{ route('admin.news.edit', ['news' => $news['id']]) }}" style="font-size: 12px;">Редактировать </a>
-                                <a href="javascript:;" style="font-size: 12px; color: red;">   Удалить</a>
-                            </td>
+                @forelse($newsList as $news)
+                    <tr>
+                        <td>{{ $news->id }}</td>
+                        <td>{{ $news->title }}</td>
+                        <td>{{ $news->description }}</td>
+                        <td>{{ $news->author }}</td>
+                        <td>{{ $news->status }}</td>
+                        <td>{{ $news->created_at}}</td>
+                        <td>
+                            <a href="{{ route('admin.news.edit', ['news' => $news->id]) }}" style="font-size: 12px;">Редактировать </a>
+                            <a href="javascript:;" style="font-size: 12px; color: red;">   Удалить</a>
+                        </td>
 
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4">Новостей не найдено</td>
-                        </tr>
-                    @endforelse
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4">Записей нет</td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>
