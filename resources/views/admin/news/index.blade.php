@@ -44,6 +44,7 @@
                 @endforelse
                 </tbody>
             </table>
+{{--            {{ $news->links() }}--}}
         </div>
     </div>
 @endsection

@@ -9,6 +9,7 @@
 
     <!-- Content Row -->
     <div class="row">
+        @include('inc.message')
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -40,6 +41,7 @@
                 @endforelse
                 </tbody>
             </table>
+            {{ $categories->links() }}
         </div>
     </div>
 @endsection

@@ -12,16 +12,10 @@ class News extends Model
 
     protected $table = "news";
 
-    protected array $allowedFields = ['id', 'title', 'description', 'author', 'status', 'created_at'];
+    public static array $allowedFields = ['id', 'title', 'description', 'author', 'status', 'created_at'];
 
 
-    public function getNews()
-    {
-        return \DB::table($this->table)->select($this->allowedFields)->get();
-    }
-
-    public function getNewsById(int $id)
-    {
-        return \DB::table($this->table)->select($this->allowedFields)->find($id);
-    }
+    protected $fillable = [
+        'category_id', 'title', 'description', 'author', 'status', 'image'
+    ];
 }
