@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -42,25 +44,20 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreCategoryRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreCategoryRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
 
-        $category = Category::create(
-            $request->only(['title', 'description'])
-        );
+        $category = Category::create($request->validated());
 
         if($category) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Категория успешно добавлена');
+                ->with('success', trans('messages.admin.categories.create.success'));
         }
 
-        return back()->withInput()->with('error', 'Не удалось добавить категорию');
+        return back()->withInput()->with('error', trans('messages.admin.categories.create.fail'));
     }
 
     /**
@@ -94,22 +91,17 @@ class CategoryController extends Controller
      * @param Category $category
      * @return RedirectResponse
      */
-    public function update(Request $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $request->validate([
-           'title' => ['required', 'string']
-        ]);
 
-        $category = $category->fill(
-            $request->only(['title', 'description'])
-        )->save();
+        $category = $category->fill($request->validated())->save();
 
         if($category) {
             return redirect()->route('admin.categories.index')
-                ->with('success', 'Категория успешно изменена');
+                ->with('success', trans('messages.admin.categories.update.success'));
         }
 
-        return back()->withInput()->with('error', 'Не удалось сохранить категорию');
+        return back()->withInput()->with('error', trans('messages.admin.categories.update.fail'));
 
     }
 

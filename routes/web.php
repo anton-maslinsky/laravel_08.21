@@ -32,8 +32,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 Route::group(['prefix' => 'news'], function () {
     Route::get('/', [NewsController::class, 'index'])
         ->name('news');
-    Route::get('/show/{id}', [NewsController::class, 'show'])->where('id', '\d+')
+    Route::get('/show/{news}', [NewsController::class, 'show'])
+        ->where('news', '\d+')
         ->name('news.show');
+});
+
+Route::get('collection', function () {
+    $collection = collect([
+        ['name' => 'Alex', 'age' => 35, 'work' => 'Doctor'],
+        ['name' => 'John', 'age' => 28, 'work' => 'IT'],
+        ['name' => 'Mike', 'age' => 43, 'work' => 'Builder'],
+        ['name' => 'Alex', 'age' => 35, 'work' => 'Engineer']
+    ]);
+
+    dd(
+        $collection->map(fn($people) => $people['name'])
+    );
 });
 
 

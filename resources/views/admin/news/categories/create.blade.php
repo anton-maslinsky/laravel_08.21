@@ -16,10 +16,16 @@
                 <div class="form-group">
                     <label for="title">Заголовок</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+                    @error('title')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <textarea type="text" class="form-control" name="description" id="description">{{ old('description') }}</textarea>
+                    @error('description')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <button class="btn btn-primary">Сохранить</button>
             </form>

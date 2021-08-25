@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreNewsRequest;
+use App\Http\Requests\UpdateNewsRequest;
 use App\Models\Category;
 use App\Models\News;
 use Illuminate\Contracts\Foundation\Application;
@@ -21,9 +23,9 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $newsList = News::select(
-            News::$allowedFields
-        )->get();
+        $newsList = News::with('category')->paginate(
+            config('paginate.admin.news')
+        );
 
         return view('admin.news.index', [
             'newsList' => $newsList
@@ -46,35 +48,29 @@ class NewsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreNewsRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreNewsRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
-
-        $news = News::create(
-            $request->only(News::$allowedFields)
-        );
+        $news = News::create($request->validated());
 
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно добавлена');
+                ->with('success', trans('messages.admin.news.create.success'));
         }
 
-        return back()->withInput()->with('error', 'Не удалось добавить новость');
+        return back()->withInput()->with('error', trans('messages.admin.news.create.fail'));
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param News $news
      * @return Response
      */
-    public function show($id)
+    public function show(News $news)
     {
         //
     }
@@ -98,37 +94,39 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @param UpdateNewsRequest $request
      * @param News $news
      * @return RedirectResponse
-     * @param Request $request
-     * @return RedirectResponse
      */
-    public function update(Request $request, News $news)
+    public function update(UpdateNewsRequest $request, News $news)
     {
-        $request->validate([
-            'title' => ['required', 'string']
-        ]);
-
-        $news = $news->fill(
-            $request->only(['category_id', 'title', 'description', 'author', 'image', 'status'])
-        )->save();
+        $news = $news->fill($request->validated())->save();
 
         if($news) {
             return redirect()->route('admin.news.index')
-                ->with('success', 'Новость успешно изменена');
+                ->with('success', trans('messages.admin.news.update.success'));
         }
 
-        return back()->withInput()->with('error', 'Не удалось сохранить новость');
+        return back()->withInput()->with('error', trans('messages.admin.news.update.fail'));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param Request $request
+     * @param News $news
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, News $news)
     {
-        //
+        if($request->ajax()) {
+            try{
+                $news->delete();
+                return response()->json('ok', 200);
+            }catch (\Exception $e) {
+                \Log::error($e->getMessage());
+                return response()->json('error', 400);
+            }
+        }
     }
 }

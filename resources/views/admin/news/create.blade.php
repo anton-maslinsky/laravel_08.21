@@ -27,22 +27,37 @@
                             <option value="{{ $category->id }}" @if(old('category_id') === $category->id) selected @endif>{{ $category->title }}</option>
                         @endforeach
                     </select>
+                    @error('category_id')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="title">Заголовок</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+                    @error('title')
+                        <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="description">Описание</label>
                     <textarea type="text" class="form-control" name="description" id="description">{{ old('description') }}</textarea>
+                    @error('description')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="author">Автор</label>
                     <input type="text" class="form-control" name="author" id="author" value="{{ old('author') }}">
+                    @error('author')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="image">Изображение</label>
                     <input type="file" class="form-control" name="image" id="image" value="{{ old('image') }}">
+                    @error('image')
+                    <div class="col-5 alert alert-danger">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="status">Статус</label>

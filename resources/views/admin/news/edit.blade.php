@@ -10,6 +10,11 @@
     <!-- Content Row -->
     <div class="row">
         <div class="table-responsive">
+            @if($errors->any())
+                @foreach($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                @endforeach
+            @endif
             @include('inc.message')
             <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
                 @csrf
@@ -19,7 +24,9 @@
                     <select class="form-control" name="category_id" id="category_id">
                         <option value="0">Выбрать категорию</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}" @if($news->category_id === $category->id) selected @endif>{{ $category->title }}</option>
+                            <option value="{{ $category->id }}"
+                                    @if($news->category_id === $category->id) selected @endif>
+                                {{ $category->title }}</option>
                         @endforeach
                     </select>
                 </div>
