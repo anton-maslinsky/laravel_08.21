@@ -19,8 +19,9 @@ use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 |
 */
 
-Route::get('/', [NewsController::class, 'index'])
-    ->name('news');
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::get('/', IndexController::class)->name('index');
@@ -37,17 +38,6 @@ Route::group(['prefix' => 'news'], function () {
         ->name('news.show');
 });
 
-Route::get('collection', function () {
-    $collection = collect([
-        ['name' => 'Alex', 'age' => 35, 'work' => 'Doctor'],
-        ['name' => 'John', 'age' => 28, 'work' => 'IT'],
-        ['name' => 'Mike', 'age' => 43, 'work' => 'Builder'],
-        ['name' => 'Alex', 'age' => 35, 'work' => 'Engineer']
-    ]);
+Auth::routes();
 
-    dd(
-        $collection->map(fn($people) => $people['name'])
-    );
-});
-
-
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

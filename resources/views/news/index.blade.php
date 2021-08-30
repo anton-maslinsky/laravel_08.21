@@ -5,7 +5,7 @@
     @forelse($newsList as $news)
     <!-- Post preview-->
     <div class="post-preview">
-        <a href="{{ route('news.show', ['id' => $news->id]) }}">
+        <a href="{{ route('news.show', ['news' => $news->id]) }}">
             <h2 class="post-title">{{ $news->title }}</h2>
             <h3 class="post-subtitle">{{ $news->description }}</h3>
         </a>
